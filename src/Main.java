@@ -26,13 +26,17 @@ public class Main {
 
         System.out.println("\n=== Test 4: seller insert ===");
         Seller sellerInsert = new Seller(null, "Greg", "greg@gmail.com", LocalDate.now().minusYears(35), 4000d, department);
-        sellerDao.insert(sellerInsert);
-        System.out.println("Inserted! New id = " + sellerInsert.getId());
+        //sellerDao.insert(sellerInsert);
+        //System.out.println("Inserted! New id = " + sellerInsert.getId());
 
         System.out.println("\n=== Test 5: seller update ===");
         seller = sellerDao.findById(1);
-        seller.setName("Martha Wayne");
-        sellerDao.update(seller);
+        //seller.setName("Martha Wayne");
+        //sellerDao.update(seller);
         System.out.println("Update completed!");
+
+        System.out.println("\n=== Test 6: seller delete ===");
+        sellerDao.deleteById(10);
+        System.out.println("Delete completed");
     }
 }
