@@ -1,10 +1,16 @@
 package model.dao.impl;
 
+import db.DBException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import static model.dao.impl.EntityMapper.instantiateDepartment;
 
 public class DepartmentDaoJDBC implements DepartmentDao {
 
@@ -26,12 +32,24 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void deleteById(Integer id) {
-        System.out.println("Testing method");
+
     }
 
     @Override
     public Department findById(Integer id) {
-        return null;
+        String sql = "SELECT * FROM department WHERE Id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return instantiateDepartment(resultSet);
+            }
+            return null;
+        }
+        catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }
     }
 
     @Override
