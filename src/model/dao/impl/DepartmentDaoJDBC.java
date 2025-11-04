@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static model.dao.impl.EntityMapper.instantiateDepartment;
@@ -38,7 +39,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     @Override
     public Department findById(Integer id) {
         String sql = "SELECT * FROM department WHERE Id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -54,6 +55,16 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        return List.of();
+        String sql = "SELECT * FROM department";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            List<Department> departments = new ArrayList<>();
+            while (resultSet.next()) departments.add(instantiateDepartment(resultSet));
+            return departments;
+        }
+        catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }
     }
 }
