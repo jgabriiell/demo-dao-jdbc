@@ -11,7 +11,7 @@ public class Main2 {
         DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 
         System.out.println("=== Test 1: department findById ===");
-        Department department = departmentDao.findById(1);
+        Department department = departmentDao.findById(8);
         System.out.println(department);
 
         System.out.println("=== Test 2: department findAll ===");
@@ -22,5 +22,10 @@ public class Main2 {
         department = new Department(null, "D3");
         departmentDao.insert(department);
         System.out.println("Insert done! New dep id: " + department.getId());
+
+        System.out.println("=== Test 4: department update ===");
+        department.setName("D5");
+        departmentDao.update(department);
+        System.out.println("Update completed! New dep name: " + department.getName());
     }
 }
