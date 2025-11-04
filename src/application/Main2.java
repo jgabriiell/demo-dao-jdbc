@@ -14,8 +14,13 @@ public class Main2 {
         Department department = departmentDao.findById(1);
         System.out.println(department);
 
-        System.out.println("=== Test 1: department findAll ===");
+        System.out.println("=== Test 2: department findAll ===");
         List<Department> departmentList = departmentDao.findAll();
         System.out.println(departmentList);
+
+        System.out.println("=== Test 3: department insert ===");
+        department = new Department(null, "D3");
+        departmentDao.insert(department);
+        System.out.println("Insert done! New dep id: " + department.getId());
     }
 }
