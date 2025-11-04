@@ -59,7 +59,14 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void deleteById(Integer id) {
-
+        String sql = "DELETE FROM department WHERE Id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }
     }
 
     @Override
