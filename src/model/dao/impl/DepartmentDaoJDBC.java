@@ -75,9 +75,10 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return instantiateDepartment(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()){
+                if (resultSet.next()) {
+                    return instantiateDepartment(resultSet);
+                }
             }
             return null;
         }
@@ -88,13 +89,14 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        String sql = "SELECT * FROM department";
+        String sql = "SELECT * FROM department ORDER BY Name";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            ResultSet resultSet = statement.executeQuery();
-            List<Department> departments = new ArrayList<>();
-            while (resultSet.next()) departments.add(instantiateDepartment(resultSet));
-            return departments;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Department> departments = new ArrayList<>();
+                while (resultSet.next()) departments.add(instantiateDepartment(resultSet));
+                return departments;
+            }
         }
         catch (SQLException e) {
             throw new DBException(e.getMessage());
